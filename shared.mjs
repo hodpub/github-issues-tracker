@@ -324,6 +324,100 @@ function updateViewSwitcherLinks() {
 }
 
 /**
+ * Delete a specific repository from cache
+ */
+function deleteRepoFromCache(repo) {
+    const cacheKeysToDelete = [];
+    
+    // Find all cache keys for this repo
+    Object.keys(localStorage).forEach(key => {
+        if (key.startsWith(`${CACHE_KEY_PREFIX}${repo}_`)) {
+            cacheKeysToDelete.push(key);
+        }
+    });
+    
+    if (cacheKeysToDelete.length === 0) {
+        showError(`No cache found for ${repo}`);
+        return;
+    }
+    
+    // Delete the cache entries
+    cacheKeysToDelete.forEach(key => localStorage.removeItem(key));
+    
+    // Also remove from the repos textarea
+    const reposInput = document.getElementById('repos');
+    if (reposInput) {
+        const currentRepos = reposInput.value.split('\n')
+            .map(line => line.trim())
+            .filter(line => line && line.includes('/'));
+        
+        const filteredRepos = currentRepos.filter(r => r !== repo);
+        reposInput.value = filteredRepos.join('\n');
+        
+        // Trigger input event to show change notice
+        reposInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    
+    // Show confirmation message briefly
+    const cacheStatus = document.getElementById('cacheStatus');
+    if (cacheStatus) {
+        cacheStatus.innerHTML = `🗑️ Deleted cache for ${repo}`;
+    }
+    
+    // Update cache status display immediately to remove the item
+    setTimeout(() => {
+        updateCacheStatus();
+    }, 500);
+}
+
+/**
+ * Add a repository to the repos list if it's not already there
+ */
+function addRepoToList(repo) {
+    const reposInput = document.getElementById('repos');
+    if (!reposInput) return;
+    
+    const currentRepos = reposInput.value.split('\n')
+        .map(line => line.trim())
+        .filter(line => line && line.includes('/'));
+    
+    // Toggle: remove if exists, add if not
+    const repoIndex = currentRepos.indexOf(repo);
+    let message;
+    
+    if (repoIndex !== -1) {
+        // Remove the repo
+        currentRepos.splice(repoIndex, 1);
+        message = `➖ Removed ${repo} from list`;
+    } else {
+        // Add the repo
+        currentRepos.push(repo);
+        message = `✅ Added ${repo} to list`;
+    }
+    
+    reposInput.value = currentRepos.join('\n');
+    
+    // Trigger input event to show change notice
+    reposInput.dispatchEvent(new Event('input', { bubbles: true }));
+    
+    // Expand the config section if collapsed
+    const reposSection = document.getElementById('reposSection');
+    if (reposSection && reposSection.classList.contains('collapsed')) {
+        reposSection.classList.remove('collapsed');
+    }
+    
+    // Show toggle message
+    const cacheStatus = document.getElementById('cacheStatus');
+    if (cacheStatus) {
+        const originalText = cacheStatus.innerHTML;
+        cacheStatus.innerHTML = message;
+        setTimeout(() => {
+            cacheStatus.innerHTML = originalText;
+        }, 2000);
+    }
+}
+
+/**
  * Setup common UI handlers (repos toggle, token permissions toggle)
  */
 export function setupCommonUI() {
@@ -449,15 +543,41 @@ export function updateCacheStatus() {
             
             // Populate details panel
             if (cacheDetails) {
-                cacheDetails.innerHTML = cacheInfo.map(info => `
+                cacheDetails.innerHTML = `
+                    <div style="font-size: 11px; color: #8b949e; margin-bottom: 8px; padding: 6px; background: #161b22; border-radius: 4px; border-left: 2px solid #58a6ff;">
+                        💡 <strong>Tip:</strong> Left-click to toggle repo in list • Right-click to delete from cache
+                    </div>
+                ` + cacheInfo.map(info => `
                     <div class="cache-detail-item">
-                        <span style="font-family: monospace; color: #58a6ff;">${escapeHtml(info.repo)}</span>
+                        <span style="font-family: monospace; color: #58a6ff; cursor: pointer; text-decoration: underline;" 
+                              class="cache-repo-name" 
+                              data-repo="${escapeHtml(info.repo)}"
+                              title="Left-click to toggle in list • Right-click to delete from cache">
+                            ${escapeHtml(info.repo)}
+                        </span>
                         <span class="cache-detail-time">
                             ${info.timeAgo} • 
                             expires in ${info.remainingMinutes}m
                         </span>
                     </div>
                 `).join('');
+                
+                // Add click handlers for repo names
+                cacheDetails.querySelectorAll('.cache-repo-name').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const repo = el.dataset.repo;
+                        addRepoToList(repo);
+                    });
+                    
+                    // Add right-click handler to delete from cache
+                    el.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const repo = el.dataset.repo;
+                        deleteRepoFromCache(repo);
+                    });
+                });
             }
         } else {
             cacheStatus.textContent = 'No cached data';
@@ -542,6 +662,8 @@ export function setupLoadButton(onLoad) {
     const tokenInput = document.getElementById('token');
     const reposInput = document.getElementById('repos');
     const forceRefresh = document.getElementById('forceRefresh');
+    
+    let configChanged = false;
 
     // Load saved token from localStorage
     const savedToken = localStorage.getItem('githubToken');
@@ -549,6 +671,26 @@ export function setupLoadButton(onLoad) {
         tokenInput.value = savedToken;
         setGitHubToken(savedToken);
     }
+    
+    // Track changes to repos textarea
+    const showChangeNotice = () => {
+        if (!configChanged) {
+            configChanged = true;
+            loadBtn.style.background = '#da3633';
+            loadBtn.style.animation = 'pulse 2s infinite';
+            loadBtn.textContent = '⚠️ Load Issues & PRs (Config Changed)';
+        }
+    };
+    
+    const hideChangeNotice = () => {
+        configChanged = false;
+        loadBtn.style.background = '';
+        loadBtn.style.animation = '';
+        loadBtn.textContent = 'Load Issues & PRs';
+    };
+    
+    // Watch for changes in repos textarea
+    reposInput.addEventListener('input', showChangeNotice);
 
     loadBtn.addEventListener('click', async () => {
         const token = tokenInput.value.trim();
@@ -558,6 +700,9 @@ export function setupLoadButton(onLoad) {
         // Save to localStorage
         localStorage.setItem('githubToken', token);
         localStorage.setItem('githubRepos', reposText);
+        
+        // Clear change notice
+        hideChangeNotice();
 
         if (!reposText) {
             showError('Please enter at least one repository');
