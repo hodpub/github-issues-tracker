@@ -474,3 +474,21 @@ export function setupLoadButton(onLoad) {
 
     return { tokenInput, reposInput };
 }
+
+/**
+ * Setup ad banner
+ */
+export function setupAdBanner(imageUrl = 'https://hodpub.com/wp-content/uploads/2025/11/ad.webp') {
+    const adContainer = document.getElementById('hodpub-ad');
+    const adImg = document.getElementById('hodpub-ad-img');
+    
+    if (!adContainer || !adImg) return;
+    
+    // Set image source
+    adImg.src = imageUrl;
+    
+    // Hide container if image fails to load
+    adImg.onerror = function() {
+        adContainer.style.display = 'none';
+    };
+}

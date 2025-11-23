@@ -5,12 +5,14 @@ import {
     escapeHtml,
     setupCommonUI,
     getInitialRepos,
-    setupLoadButton
+    setupLoadButton,
+    setupAdBanner
 } from './shared.mjs';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonUI();
+    setupAdBanner();
     setupLoadButton(loadAllRepositories);
     
     // Setup issue detail panel handlers

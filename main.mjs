@@ -10,12 +10,14 @@ import {
     escapeHtml,
     setupCommonUI,
     getInitialRepos,
-    getCacheAgeText
+    getCacheAgeText,
+    setupAdBanner
 } from './shared.mjs';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonUI();
+    setupAdBanner();
     
     const initialRepos = getInitialRepos();
 
