@@ -174,6 +174,12 @@ function renderSwimlane(repoData) {
     const swimlane = document.createElement('div');
     swimlane.className = 'swimlane collapsed';
 
+    // Sort issues by type: bugs, features, tasks, other
+    const typeOrder = { bug: 1, feature: 2, task: 3, other: 4 };
+    const sortedIssues = [...issues].sort((a, b) => {
+        return (typeOrder[a.type] || 4) - (typeOrder[b.type] || 4);
+    });
+
     const totalIssues = issues.length;
     const totalPRs = pullRequests.length;
     const bugCount = [...issues, ...pullRequests].filter(item => item.type === 'bug').length;
@@ -215,7 +221,7 @@ function renderSwimlane(repoData) {
         <div class="swimlane-content">
             <div class="section issues-section">
                 <div class="section-title">Issues (${totalIssues})</div>
-                ${renderItems(issues, false)}
+                ${renderItems(sortedIssues, false)}
             </div>
             ${prSection}
         </div>
