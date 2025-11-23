@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Issues Viewer - By Type</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>🔍 GitHub Issues Viewer</h1>
+        
+        <div class="view-switcher">
+            <a href="index.html" class="view-btn">By Repository</a>
+            <a href="by-type.html" class="view-btn active">By Type</a>
+        </div>
+        
+        <div class="config-section collapsed" id="reposSection">
+            <div class="config-header" id="reposToggle">
+                <div class="config-title">
+                    <span class="config-collapse-icon">▼</span>
+                    <span>Repository Configuration</span>
+                </div>
+            </div>
+            <div class="config-content">
+                <div class="input-group">
+                    <label for="repos">GitHub Repositories (one per line, format: owner/repo)</label>
+                    <textarea id="repos" placeholder="owner/repo&#10;owner2/repo2">hodpub/coriolis-tgd
+hodpub/yze-coriolis
+fvtt-fria-ligan/forbidden-lands-foundry-vtt
+hodpub/invincible
+fvtt-fria-ligan/vaesen-foundry-vtt</textarea>
+                </div>
+                
+                <div class="input-group" id="tokenSection" style="display: none; margin-top: 15px;">
+                    <label for="token">
+                        GitHub Personal Access Token (optional, for higher rate limits)
+                        <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer" style="color: #58a6ff; text-decoration: none; margin-left: 8px;">Get token ↗️</a>
+                    </label>
+                    <input type="password" id="token" placeholder="ghp_...">
+                    <div class="token-permissions">
+                        <div class="token-permissions-header" id="permissionsToggle">
+                            <span class="permission-icon collapsed">▼</span>
+                            <span>Required Permissions</span>
+                        </div>
+                        <div class="token-permissions-content hidden" id="permissionsContent">
+                            <div class="token-permission-item">
+                                <strong>public_repo</strong> - Access public repositories (required)
+                            </div>
+                            <div class="token-permission-item">
+                                <strong>repo</strong> - Full control of private repositories (optional, only if you need private repos)
+                            </div>
+                            <p style="margin-top: 10px; font-size: 12px; color: #8b949e;">
+                                Without a token: 60 requests/hour<br>
+                                With a token: 5,000 requests/hour
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+                    <button id="loadBtn" style="flex: 0 0 auto;">Load Issues & PRs</button>
+                    <button id="clearCacheBtn" style="background: #6e7681; flex: 0 0 auto;">Clear Cache</button>
+                </div>
+                <div style="margin-top: 10px; padding: 8px 12px; background: #161b22; border-radius: 6px; font-size: 12px; color: #8b949e; display: flex; align-items: center; justify-content: space-between;">
+                    <div id="cacheStatus">No cached data</div>
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;">
+                        <input type="checkbox" id="forceRefresh" style="cursor: pointer;">
+                        <span>Force refresh</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-container"></div>
+    </header>
+
+    <div id="loading" class="loading" style="display: none;">
+        Loading repositories...
+    </div>
+
+    <div class="main-content">
+        <div class="swimlanes-wrapper">
+            <div id="swimlanes" class="swimlanes-container"></div>
+        </div>
+        <div id="iframePanel" class="iframe-panel">
+            <div class="iframe-header">
+                <span class="iframe-title" id="iframeTitle">Issue Details</span>
+                <button class="close-iframe" id="closeIframe" title="Close">×</button>
+            </div>
+            <div class="iframe-container" id="issueDetails">
+                <div class="loading" id="detailsLoading" style="display: none;">Loading issue details...</div>
+                <div id="detailsContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="by-type.mjs"></script>
+</body>
+</html>
