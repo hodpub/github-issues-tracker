@@ -4,8 +4,8 @@ import {
     showError,
     escapeHtml,
     setupCommonUI,
-    getInitialRepos,
     setupLoadButton,
+    setupAutoLoad,
     setupAdBanner,
     formatMarkdown,
     formatDate,
@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupCommonUI();
     setupAdBanner();
     setupLoadButton(loadAllRepositories);
+    
+    // Auto-load on page load with initial repos
+    setupAutoLoad(loadAllRepositories);
     
     // Setup issue detail panel handlers
     const iframePanel = document.getElementById('iframePanel');
@@ -55,18 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-    
-    // Auto-load on page load with initial repos
-    const initialRepos = getInitialRepos();
-    if (initialRepos && initialRepos.length > 0) {
-        // Update URL with initial repos
-        const url = new URL(window.location);
-        url.searchParams.set('repos', initialRepos.join(','));
-        window.history.replaceState({}, '', url);
-        
-        // Always auto-load since we can use cache
-        loadAllRepositories(initialRepos);
-    }
 });
 
 /**

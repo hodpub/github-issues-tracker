@@ -570,6 +570,26 @@ export function setupLoadButton(onLoad) {
 }
 
 /**
+ * Setup auto-load functionality for initial repos from URL
+ * @param {Function} loadFunction - The async function to call with repos array
+ */
+export async function setupAutoLoad(loadFunction) {
+    const initialRepos = getInitialRepos();
+    if (initialRepos && initialRepos.length > 0) {
+        // Update URL with initial repos
+        const url = new URL(window.location);
+        url.searchParams.set('repos', initialRepos.join(','));
+        window.history.replaceState({}, '', url);
+        
+        // Auto-load
+        await loadFunction(initialRepos);
+        
+        // Update cache status after loading (with small delay to ensure cache writes complete)
+        setTimeout(() => updateCacheStatus(), 100);
+    }
+}
+
+/**
  * Setup ad banner
  */
 export function setupAdBanner(imageUrl = 'hodpub-ad.webp') {

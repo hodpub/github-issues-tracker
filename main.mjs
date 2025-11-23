@@ -9,36 +9,22 @@ import {
     showError,
     escapeHtml,
     setupCommonUI,
-    getInitialRepos,
     setupAdBanner,
+    setupLoadButton,
+    setupAutoLoad,
     formatMarkdown,
     formatDate,
-    renderIssueDetails,
-    updateCacheStatus,
-    handleForceRefresh,
-    setupLoadButton
+    renderIssueDetails
 } from './shared.mjs';
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     setupCommonUI();
     setupAdBanner();
     setupLoadButton((repos) => loadAllRepositories(repos, true));
     
-    const initialRepos = getInitialRepos();
-
     // Auto-load on page load with initial repos
-    if (initialRepos && initialRepos.length > 0) {
-        // Update URL with initial repos
-        const url = new URL(window.location);
-        url.searchParams.set('repos', initialRepos.join(','));
-        window.history.replaceState({}, '', url);
-        
-        await loadAllRepositories(initialRepos, true);
-        
-        // Update cache status after loading
-        updateCacheStatus();
-    }
+    setupAutoLoad((repos) => loadAllRepositories(repos, true));
 
     // Setup issue detail panel handlers
     const iframePanel = document.getElementById('iframePanel');
