@@ -333,6 +333,19 @@ export function setupCommonUI() {
     // Toggle repos configuration section
     const reposToggle = document.getElementById('reposToggle');
     const reposSection = document.getElementById('reposSection');
+    const reposInput = document.getElementById('repos');
+    
+    // Auto-expand config if only default repo is present
+    if (reposSection && reposInput) {
+        const currentRepos = reposInput.value.trim();
+        const defaultRepo = 'hodpub/github-issues-tracker';
+        
+        // Check if repos is just the default (no URL params)
+        const queryRepos = getRepositoriesFromQueryString();
+        if (!queryRepos && currentRepos === defaultRepo) {
+            reposSection.classList.remove('collapsed');
+        }
+    }
     
     if (reposToggle && reposSection) {
         reposToggle.addEventListener('click', () => {
@@ -560,10 +573,13 @@ export function setupLoadButton(onLoad) {
             return;
         }
 
-        // Update URL with repos list
-        const url = new URL(window.location);
-        url.searchParams.set('repos', repos.join(','));
-        window.history.pushState({}, '', url);
+        // Update URL with repos list (skip if only default repo)
+        const defaultRepo = 'hodpub/github-issues-tracker';
+        if (!(repos.length === 1 && repos[0] === defaultRepo)) {
+            const url = new URL(window.location);
+            url.searchParams.set('repos', repos.join(','));
+            window.history.pushState({}, '', url);
+        }
 
         // Handle force refresh
         handleForceRefresh(repos);
@@ -602,10 +618,13 @@ export function setupLoadButton(onLoad) {
 export async function setupAutoLoad(loadFunction) {
     const initialRepos = getInitialRepos();
     if (initialRepos && initialRepos.length > 0) {
-        // Update URL with initial repos
-        const url = new URL(window.location);
-        url.searchParams.set('repos', initialRepos.join(','));
-        window.history.replaceState({}, '', url);
+        // Update URL with initial repos (skip if only default repo)
+        const defaultRepo = 'hodpub/github-issues-tracker';
+        if (!(initialRepos.length === 1 && initialRepos[0] === defaultRepo)) {
+            const url = new URL(window.location);
+            url.searchParams.set('repos', initialRepos.join(','));
+            window.history.replaceState({}, '', url);
+        }
         
         // Auto-load
         await loadFunction(initialRepos);
