@@ -557,7 +557,7 @@ export function setupLoadButton(onLoad) {
 /**
  * Setup ad banner
  */
-export function setupAdBanner(imageUrl = 'https://hodpub.com/wp-content/uploads/2025/11/ad.webp') {
+export function setupAdBanner(imageUrl = 'hodpub-ad.webp') {
     const adContainer = document.getElementById('hodpub-ad');
     const adImg = document.getElementById('hodpub-ad-img');
     
