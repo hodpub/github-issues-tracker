@@ -22,6 +22,7 @@ header {
 h1 {
     color: #58a6ff;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 #scrollable-content {
@@ -34,6 +35,8 @@ h1 {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .view-btn {
