@@ -72,12 +72,15 @@ fvtt-fria-ligan/vaesen-foundry-vtt</textarea>
                     <button id="clearCacheBtn" style="background: #6e7681; flex: 0 0 auto;">Clear Cache</button>
                     <button id="shareBtn" style="background: #238636; flex: 0 0 auto;">🔗 Share URL</button>
                 </div>
-                <div style="margin-top: 10px; padding: 8px 12px; background: #161b22; border-radius: 6px; font-size: 12px; color: #8b949e; display: flex; align-items: center; justify-content: space-between;">
-                    <div id="cacheStatus">No cached data</div>
-                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;">
-                        <input type="checkbox" id="forceRefresh" style="cursor: pointer;">
-                        <span>Force refresh</span>
-                    </label>
+                <div style="margin-top: 10px; padding: 8px 12px; background: #161b22; border-radius: 6px; font-size: 12px; color: #8b949e;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div id="cacheStatus" style="cursor: pointer; user-select: none; flex: 1;">No cached data</div>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;">
+                            <input type="checkbox" id="forceRefresh" style="cursor: pointer;">
+                            <span>Force refresh</span>
+                        </label>
+                    </div>
+                    <div id="cacheDetails" style="display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #30363d;"></div>
                 </div>
             </div>
         </div>

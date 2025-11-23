@@ -347,6 +347,7 @@ export function setupCommonUI() {
  */
 function updateCacheStatus() {
     const cacheStatus = document.getElementById('cacheStatus');
+    const cacheDetails = document.getElementById('cacheDetails');
     if (!cacheStatus) return;
     
     try {
@@ -354,29 +355,84 @@ function updateCacheStatus() {
         const cacheKeys = keys.filter(key => key.startsWith(CACHE_KEY_PREFIX));
         
         if (cacheKeys.length > 0) {
-            // Extract repository names from cache keys
-            const cachedRepos = cacheKeys
-                .map(key => {
-                    // Format: github_cache_{owner/repo}_{open|all}
+            // Extract repository cache info
+            const cacheInfo = cacheKeys.map(key => {
+                try {
                     const match = key.match(/github_cache_(.+)_(open|all)$/);
-                    return match ? match[1] : null;
-                })
-                .filter((repo, index, self) => repo && self.indexOf(repo) === index) // unique repos
-                .sort();
+                    if (!match) return null;
+                    
+                    const repo = match[1];
+                    const type = match[2];
+                    const cached = localStorage.getItem(key);
+                    if (!cached) return null;
+                    
+                    const { timestamp } = JSON.parse(cached);
+                    const ageMs = Date.now() - timestamp;
+                    const ageMinutes = Math.floor(ageMs / 60000);
+                    const ageSeconds = Math.floor((ageMs % 60000) / 1000);
+                    const remainingMs = CACHE_DURATION_MS - ageMs;
+                    const remainingMinutes = Math.max(0, Math.ceil(remainingMs / 60000));
+                    
+                    let timeAgo;
+                    if (ageMinutes > 0) {
+                        timeAgo = `${ageMinutes}m ${ageSeconds}s ago`;
+                    } else {
+                        timeAgo = `${ageSeconds}s ago`;
+                    }
+                    
+                    return {
+                        repo,
+                        type,
+                        timeAgo,
+                        remainingMinutes,
+                        expired: remainingMs <= 0
+                    };
+                } catch (e) {
+                    return null;
+                }
+            }).filter(info => info && !info.expired).sort((a, b) => a.repo.localeCompare(b.repo));
             
-            const tooltip = cachedRepos.join('\n');
-            cacheStatus.textContent = `${cacheKeys.length} repositories cached (15 min expiry)`;
-            cacheStatus.title = tooltip;
-            cacheStatus.style.cursor = 'help';
+            const uniqueRepos = [...new Set(cacheInfo.map(info => info.repo))].length;
+            cacheStatus.innerHTML = `📦 ${uniqueRepos} repo${uniqueRepos !== 1 ? 's' : ''} cached (click to expand)`;
+            
+            // Setup click handler for toggling
+            cacheStatus.onclick = () => {
+                if (cacheDetails && cacheInfo.length > 0) {
+                    const isVisible = cacheDetails.style.display !== 'none';
+                    cacheDetails.style.display = isVisible ? 'none' : 'block';
+                    cacheStatus.innerHTML = isVisible ? 
+                        `📦 ${uniqueRepos} repo${uniqueRepos !== 1 ? 's' : ''} cached (click to expand)` :
+                        `📦 ${uniqueRepos} repo${uniqueRepos !== 1 ? 's' : ''} cached (click to collapse)`;
+                }
+            };
+            
+            // Populate details panel
+            if (cacheDetails) {
+                cacheDetails.innerHTML = cacheInfo.map(info => `
+                    <div class="cache-detail-item">
+                        <span style="font-family: monospace; color: #58a6ff;">${escapeHtml(info.repo)}</span>
+                        <span class="cache-detail-time">
+                            ${info.timeAgo} • 
+                            expires in ${info.remainingMinutes}m
+                        </span>
+                    </div>
+                `).join('');
+            }
         } else {
             cacheStatus.textContent = 'No cached data';
-            cacheStatus.title = '';
-            cacheStatus.style.cursor = 'default';
+            cacheStatus.onclick = null;
+            if (cacheDetails) {
+                cacheDetails.style.display = 'none';
+                cacheDetails.innerHTML = '';
+            }
         }
     } catch (error) {
         cacheStatus.textContent = 'No cached data';
-        cacheStatus.title = '';
-        cacheStatus.style.cursor = 'default';
+        cacheStatus.onclick = null;
+        if (cacheDetails) {
+            cacheDetails.style.display = 'none';
+            cacheDetails.innerHTML = '';
+        }
     }
 }
 

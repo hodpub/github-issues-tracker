@@ -10,7 +10,6 @@ import {
     escapeHtml,
     setupCommonUI,
     getInitialRepos,
-    getCacheAgeText,
     setupAdBanner,
     formatMarkdown,
     formatDate,
@@ -187,8 +186,6 @@ function renderSwimlane(repoData) {
     
     const [owner, repoName] = repo.split('/');
 
-    const cacheInfo = getCacheAgeText(repoData);
-
     swimlane.innerHTML = `
         <div class="swimlane-header">
             <div class="swimlane-title">
@@ -208,7 +205,6 @@ function renderSwimlane(repoData) {
                     <span>✨ Features: ${featureCount}</span>
                     <span>📋 Tasks: ${taskCount}</span>
                     <span>❓ Other: ${otherCount}</span>
-                    ${cacheInfo ? `<span style="color: #8b949e; font-size: 11px;">${cacheInfo}</span>` : ''}
                 </div>
             </div>
         </div>
