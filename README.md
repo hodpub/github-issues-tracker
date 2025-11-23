@@ -109,6 +109,10 @@ Works in all modern browsers that support:
 
 Issues and pull requests are welcome! This is an open-source project maintained for the community.
 
+## Development Note
+> [!IMPORTANT]  
+> As a side project rather than our core product focus, this project was developed with AI assistance (GitHub Copilot) to enable rapid iteration and prototyping. We do not use AI to create our Foundry systems and modules, following the request from Foundry LLC. This is a side project to facilitate working with our partners and clients to view issues and PRs from several repositories at the same time.
+
 ## License
 
 MIT - Feel free to use, modify, and distribute as you wish.
