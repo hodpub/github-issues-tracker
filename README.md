@@ -2,6 +2,8 @@
 
 A simple, privacy-focused web app to view GitHub issues and pull requests across multiple repositories in a unified dashboard. **100% client-side** - no server, no data collection, no tracking.
 
+**🚀 [Try it now](https://hodpub.github.io/github-issues-tracker/)**
+
 ## Features
 
 ### Views & Organization
