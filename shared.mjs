@@ -345,7 +345,7 @@ export function setupCommonUI() {
 /**
  * Update cache status display
  */
-function updateCacheStatus() {
+export function updateCacheStatus() {
     const cacheStatus = document.getElementById('cacheStatus');
     const cacheDetails = document.getElementById('cacheDetails');
     if (!cacheStatus) return;

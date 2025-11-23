@@ -13,7 +13,8 @@ import {
     setupAdBanner,
     formatMarkdown,
     formatDate,
-    renderIssueDetails
+    renderIssueDetails,
+    updateCacheStatus
 } from './shared.mjs';
 
 // Initialize the application
@@ -57,6 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         await loadAllRepositories(repos, true);
+        
+        // Update cache status after loading
+        updateCacheStatus();
     });
 
     // Setup issue detail panel handlers
