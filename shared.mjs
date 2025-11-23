@@ -515,3 +515,70 @@ export function setupAdBanner(imageUrl = 'https://hodpub.com/wp-content/uploads/
         adContainer.style.display = 'none';
     };
 }
+
+/**
+ * Format markdown text with support for mixed HTML/Markdown
+ */
+export function formatMarkdown(text) {
+    if (!text) return '';
+    
+    // Temporarily protect HTML tags from escaping (including multi-line tags)
+    const htmlTags = [];
+    let html = text.replace(/(<[^>]+>)/gs, (match) => {
+        htmlTags.push(match);
+        return `|||HTMLTAG${htmlTags.length - 1}|||`;
+    });
+    
+    // Now escape the remaining text
+    html = escapeHtml(html);
+    
+    // Code blocks with language
+    html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+    
+    // Inline code (must be before other formatting)
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    
+    // Headers
+    html = html.replace(/^### (.+)$/gm, '<h3 style="color: #c9d1d9; font-size: 16px; margin: 15px 0 10px 0;">$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2 style="color: #c9d1d9; font-size: 18px; margin: 15px 0 10px 0;">$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h1 style="color: #c9d1d9; font-size: 20px; margin: 15px 0 10px 0;">$1</h1>');
+    
+    // Bold
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+    
+    // Italic
+    html = html.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
+    html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
+    
+    // Strikethrough
+    html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
+    
+    // Links
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #58a6ff; text-decoration: none;">$1 ↗️</a>');
+    
+    // Unordered lists
+    html = html.replace(/^\* (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
+    html = html.replace(/^- (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
+    
+    // Ordered lists
+    html = html.replace(/^\d+\. (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
+    
+    // Wrap consecutive list items
+    html = html.replace(/(<li[\s\S]*?<\/li>\s*)+/g, '<ul style="margin: 10px 0;">$&</ul>');
+    
+    // Blockquotes
+    html = html.replace(/^&gt; (.+)$/gm, '<blockquote style="border-left: 3px solid #30363d; padding-left: 15px; margin: 10px 0; color: #8b949e;">$1</blockquote>');
+    
+    // Horizontal rules
+    html = html.replace(/^---$/gm, '<hr style="border: none; border-top: 1px solid #30363d; margin: 20px 0;">');
+    
+    // Restore HTML tags (must be before converting &lt; back)
+    html = html.replace(/\|\|\|HTMLTAG(\d+)\|\|\|/g, (match, index) => htmlTags[parseInt(index)]);
+    
+    // Paragraphs - preserve double line breaks
+    html = html.replace(/\n\n/g, '</p><p style="margin-bottom: 12px;">');
+    html = html.replace(/\n/g, '<br>');
+    
+    return '<p style="margin-bottom: 12px;">' + html + '</p>';
+}

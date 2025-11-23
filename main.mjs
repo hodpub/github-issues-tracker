@@ -11,7 +11,8 @@ import {
     setupCommonUI,
     getInitialRepos,
     getCacheAgeText,
-    setupAdBanner
+    setupAdBanner,
+    formatMarkdown
 } from './shared.mjs';
 
 // Initialize the application
@@ -160,62 +161,6 @@ function renderIssueDetails(issue, htmlUrl, iframeTitle, detailsContent) {
     html += `<a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" class="view-on-github">View on GitHub ↗️</a>`;
     
     detailsContent.innerHTML = html;
-}
-
-/**
- * Simple markdown-to-HTML formatter
- */
-function formatMarkdown(text) {
-    if (!text) return '';
-    
-    let html = escapeHtml(text);
-    
-    // Code blocks with language
-    html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
-    
-    // Inline code (must be before other formatting)
-    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-    
-    // Headers
-    html = html.replace(/^### (.+)$/gm, '<h3 style="color: #c9d1d9; font-size: 16px; margin: 15px 0 10px 0;">$1</h3>');
-    html = html.replace(/^## (.+)$/gm, '<h2 style="color: #c9d1d9; font-size: 18px; margin: 15px 0 10px 0;">$1</h2>');
-    html = html.replace(/^# (.+)$/gm, '<h1 style="color: #c9d1d9; font-size: 20px; margin: 15px 0 10px 0;">$1</h1>');
-    
-    // Bold
-    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
-    
-    // Italic
-    html = html.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
-    html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
-    
-    // Strikethrough
-    html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
-    
-    // Links
-    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #58a6ff; text-decoration: none;">$1 ↗️</a>');
-    
-    // Unordered lists
-    html = html.replace(/^\* (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
-    html = html.replace(/^- (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
-    
-    // Ordered lists
-    html = html.replace(/^\d+\. (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
-    
-    // Wrap consecutive list items
-    html = html.replace(/(<li[\s\S]*?<\/li>\s*)+/g, '<ul style="margin: 10px 0;">$&</ul>');
-    
-    // Blockquotes
-    html = html.replace(/^&gt; (.+)$/gm, '<blockquote style="border-left: 3px solid #30363d; padding-left: 15px; margin: 10px 0; color: #8b949e;">$1</blockquote>');
-    
-    // Horizontal rules
-    html = html.replace(/^---$/gm, '<hr style="border: none; border-top: 1px solid #30363d; margin: 20px 0;">');
-    
-    // Paragraphs - preserve double line breaks
-    html = html.replace(/\n\n/g, '</p><p style="margin-bottom: 12px;">');
-    html = html.replace(/\n/g, '<br>');
-    
-    return '<p style="margin-bottom: 12px;">' + html + '</p>';
 }
 
 /**

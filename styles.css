@@ -293,6 +293,7 @@ button:disabled {
     flex: 1;
     position: relative;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 20px;
 }
 
@@ -321,6 +322,14 @@ button:disabled {
     color: #c9d1d9;
     line-height: 1.6;
     margin-bottom: 20px;
+}
+
+.issue-detail-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px 0;
+    border-radius: 6px;
 }
 
 .issue-detail-body p {
