@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Auto-load on page load with initial repos
     if (initialRepos && initialRepos.length > 0) {
+        // Update URL with initial repos
+        const url = new URL(window.location);
+        url.searchParams.set('repos', initialRepos.join(','));
+        window.history.replaceState({}, '', url);
+        
         loadAllRepositories(initialRepos, true);
     }
 

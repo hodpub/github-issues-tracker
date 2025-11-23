@@ -461,6 +461,11 @@ export function setupLoadButton(onLoad) {
             return;
         }
 
+        // Update URL with repos list
+        const url = new URL(window.location);
+        url.searchParams.set('repos', repos.join(','));
+        window.history.pushState({}, '', url);
+
         // Clear cache for selected repos if force refresh is checked
         if (forceRefresh && forceRefresh.checked) {
             clearCache(repos);
@@ -471,6 +476,24 @@ export function setupLoadButton(onLoad) {
         // Update cache status after loading
         updateCacheStatus();
     });
+
+    // Setup share button
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                const originalText = shareBtn.innerHTML;
+                shareBtn.innerHTML = '✅ Copied!';
+                shareBtn.style.background = '#238636';
+                setTimeout(() => {
+                    shareBtn.innerHTML = originalText;
+                }, 2000);
+            } catch (err) {
+                showError('Failed to copy URL to clipboard');
+            }
+        });
+    }
 
     return { tokenInput, reposInput };
 }

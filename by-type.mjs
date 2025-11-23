@@ -56,6 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auto-load on page load with initial repos
     const initialRepos = getInitialRepos();
     if (initialRepos && initialRepos.length > 0) {
+        // Update URL with initial repos
+        const url = new URL(window.location);
+        url.searchParams.set('repos', initialRepos.join(','));
+        window.history.replaceState({}, '', url);
+        
         // Always auto-load since we can use cache
         loadAllRepositories(initialRepos);
     }
@@ -153,7 +158,7 @@ function renderTypeSwimlane(typeLabel, items) {
             </div>
             <div class="swimlane-stats">
                 <span>Issues: ${items.length}</span>
-                <span>📦 Repos: ${repos.length}</span>
+                <span>📂 Repos: ${repos.length}</span>
             </div>
         </div>
         <div class="swimlane-content">
