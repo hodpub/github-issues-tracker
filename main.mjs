@@ -14,13 +14,16 @@ import {
     formatMarkdown,
     formatDate,
     renderIssueDetails,
-    updateCacheStatus
+    updateCacheStatus,
+    handleForceRefresh,
+    setupLoadButton
 } from './shared.mjs';
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     setupCommonUI();
     setupAdBanner();
+    setupLoadButton((repos) => loadAllRepositories(repos, true));
     
     const initialRepos = getInitialRepos();
 
@@ -31,37 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
         url.searchParams.set('repos', initialRepos.join(','));
         window.history.replaceState({}, '', url);
         
-        loadAllRepositories(initialRepos, true);
-    }
-
-    // Setup load button handler
-    const loadBtn = document.getElementById('loadBtn');
-    loadBtn.addEventListener('click', async () => {
-        setGitHubToken(document.getElementById('token').value.trim());
-        const reposText = document.getElementById('repos').value.trim();
-
-        // Save to localStorage
-        localStorage.setItem('githubRepos', reposText);
-
-        if (!reposText) {
-            showError('Please enter at least one repository');
-            return;
-        }
-
-        const repos = reposText.split('\n')
-            .map(line => line.trim())
-            .filter(line => line && line.includes('/'));
-
-        if (repos.length === 0) {
-            showError('Please enter valid repositories in format: owner/repo');
-            return;
-        }
-
-        await loadAllRepositories(repos, true);
+        await loadAllRepositories(initialRepos, true);
         
         // Update cache status after loading
         updateCacheStatus();
-    });
+    }
 
     // Setup issue detail panel handlers
     const iframePanel = document.getElementById('iframePanel');

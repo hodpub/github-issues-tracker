@@ -1,8 +1,8 @@
 // GitHub API configuration
 const GITHUB_API_BASE = 'https://api.github.com';
 
-// Cache configuration (15 minutes default)
-const CACHE_DURATION_MS = 15 * 60 * 1000;
+// Cache configuration (1 hour default)
+const CACHE_DURATION_MS = 60 * 60 * 1000;
 const CACHE_KEY_PREFIX = 'github_cache_';
 
 // State
@@ -219,9 +219,11 @@ export async function fetchRepositoryData(repo, openOnly = false) {
     // Check cache first
     const cached = getCachedData(repo, openOnly);
     if (cached) {
+        console.log(`Using cache for ${repo}`);
         return cached;
     }
     
+    console.log(`Fetching fresh data for ${repo}`);
     try {
         const state = openOnly ? 'open' : 'all';
         const issuesAndPRsUrl = `${GITHUB_API_BASE}/repos/${owner}/${repoName}/issues?state=${state}&per_page=100`;
@@ -462,6 +464,21 @@ export function getCacheAgeText(repoData) {
 }
 
 /**
+ * Handle force refresh - clears cache if checkbox is checked
+ */
+export function handleForceRefresh(repos) {
+    const forceRefresh = document.getElementById('forceRefresh');
+    if (forceRefresh && forceRefresh.checked) {
+        const clearedCount = clearCache(repos);
+        console.log(`Force refresh: cleared ${clearedCount} cache entries for`, repos);
+        // Uncheck the box after clearing
+        forceRefresh.checked = false;
+        return true;
+    }
+    return false;
+}
+
+/**
  * Get initial repositories (from query string or textarea)
  */
 export function getInitialRepos() {
@@ -522,15 +539,13 @@ export function setupLoadButton(onLoad) {
         url.searchParams.set('repos', repos.join(','));
         window.history.pushState({}, '', url);
 
-        // Clear cache for selected repos if force refresh is checked
-        if (forceRefresh && forceRefresh.checked) {
-            clearCache(repos);
-        }
+        // Handle force refresh
+        handleForceRefresh(repos);
 
         await onLoad(repos);
         
-        // Update cache status after loading
-        updateCacheStatus();
+        // Update cache status after loading (with small delay to ensure cache writes complete)
+        setTimeout(() => updateCacheStatus(), 100);
     });
 
     // Setup share button
