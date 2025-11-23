@@ -798,6 +798,100 @@ export function setupAdBanner(imageUrl = 'hodpub-ad.webp') {
 }
 
 /**
+ * Setup help panel
+ */
+export function setupHelpPanel() {
+    const helpBtn = document.getElementById('helpBtn');
+    const helpPanel = document.getElementById('helpPanel');
+    const closeHelp = document.getElementById('closeHelp');
+    const helpContent = document.getElementById('helpContent');
+    
+    if (!helpBtn || !helpPanel || !closeHelp || !helpContent) return;
+    
+    // Help content
+    const helpHTML = `
+        <div style="padding: 20px; max-width: 800px; margin: 0 auto;">
+            <h2 style="color: #58a6ff; margin-bottom: 20px;">📖 Quick Start Guide</h2>
+            
+            <section style="margin-bottom: 30px;">
+                <h3 style="color: #8b949e; margin-bottom: 10px;">🚀 Getting Started</h3>
+                <ol style="line-height: 1.8;">
+                    <li><strong>Enter repositories</strong> in the format <code>owner/repo</code> (one per line)</li>
+                    <li><strong>Optional (but required for private repos):</strong> Add a GitHub token for higher rate limits (5000/hour vs 60/hour) and to access private repositories</li>
+                    <li>Click <strong>"Load Issues & PRs"</strong> to fetch data</li>
+                    <li>Switch between <strong>"By Repository"</strong> and <strong>"By Type"</strong> views</li>
+                </ol>
+            </section>
+            
+            <section style="margin-bottom: 30px;">
+                <h3 style="color: #8b949e; margin-bottom: 10px;">🎯 Key Features</h3>
+                <ul style="line-height: 1.8;">
+                    <li><strong>Click on any issue/PR card</strong> to view details inline</li>
+                    <li><strong>PRs open directly on GitHub</strong> for code review</li>
+                    <li><strong>Color coding:</strong> Bugs (🐛 red/green), PRs (🔀 purple when present)</li>
+                    <li><strong>Automatic classification:</strong> Bugs, features, tasks based on labels</li>
+                    <li><strong>1-hour caching</strong> to reduce API calls and stay within rate limits</li>
+                </ul>
+            </section>
+            
+            <section style="margin-bottom: 30px;">
+                <h3 style="color: #8b949e; margin-bottom: 10px;">💾 Cache Management</h3>
+                <ul style="line-height: 1.8;">
+                    <li><strong>Click "📦 cached"</strong> to expand/collapse cache details</li>
+                    <li><strong>Left-click</strong> a cached repo name to toggle it in your list</li>
+                    <li><strong>Right-click</strong> a cached repo name to delete it from cache</li>
+                    <li><strong>"Force refresh"</strong> checkbox bypasses cache for fresh data</li>
+                    <li><strong>"Clear Cache"</strong> button removes all cached data</li>
+                </ul>
+            </section>
+            
+            <section style="margin-bottom: 30px;">
+                <h3 style="color: #8b949e; margin-bottom: 10px;">🔗 Sharing & URLs</h3>
+                <ul style="line-height: 1.8;">
+                    <li><strong>URL auto-updates</strong> when you load repositories</li>
+                    <li><strong>Share button (🔗)</strong> copies the current URL to clipboard</li>
+                    <li><strong>Bookmark URLs</strong> to save your repository configurations</li>
+                    <li><strong>URL format:</strong> <code>?repos=owner/repo1,owner/repo2</code></li>
+                </ul>
+            </section>
+            
+            <section style="margin-bottom: 30px;">
+                <h3 style="color: #8b949e; margin-bottom: 10px;">⚠️ Important Notes</h3>
+                <ul style="line-height: 1.8;">
+                    <li><strong>Red pulsing Load button</strong> means config changed - click to reload</li>
+                    <li><strong>100% client-side</strong> - no data sent to servers, all stays local</li>
+                    <li><strong>Token stored locally</strong> in your browser only</li>
+                    <li><strong>Private repos</strong> require a token with <code>repo</code> scope</li>
+                </ul>
+            </section>
+            
+            <section style="margin-bottom: 20px;">
+                <h3 style="color: #8b949e; margin-bottom: 10px;">🎨 View Modes</h3>
+                <ul style="line-height: 1.8;">
+                    <li><strong>By Repository:</strong> Each repo gets its own section showing all issues/PRs</li>
+                    <li><strong>By Type:</strong> Issues grouped across all repos (PRs, Bugs, Features, Tasks)</li>
+                </ul>
+            </section>
+            
+            <div style="padding: 15px; background: #161b22; border-radius: 6px; border-left: 3px solid #238636;">
+                <strong style="color: #3fb950;">💡 Pro Tip:</strong> Use the cache panel to quickly add/remove repos you've previously viewed!
+            </div>
+        </div>
+    `;
+    
+    // Show help panel
+    helpBtn.addEventListener('click', () => {
+        helpContent.innerHTML = helpHTML;
+        helpPanel.classList.add('open');
+    });
+    
+    // Close help panel
+    closeHelp.addEventListener('click', () => {
+        helpPanel.classList.remove('open');
+    });
+}
+
+/**
  * Format a date for display
  */
 export function formatDate(dateString) {

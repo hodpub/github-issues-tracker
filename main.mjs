@@ -12,6 +12,7 @@ import {
     setupAdBanner,
     setupLoadButton,
     setupAutoLoad,
+    setupHelpPanel,
     formatMarkdown,
     formatDate,
     renderIssueDetails
@@ -21,6 +22,7 @@ import {
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonUI();
     setupAdBanner();
+    setupHelpPanel();
     setupLoadButton((repos) => loadAllRepositories(repos, true));
     
     // Auto-load on page load with initial repos
