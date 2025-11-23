@@ -687,6 +687,28 @@ button:disabled {
 }
 
 @media (max-width: 768px) {
+    /* View switcher: 2 buttons per row on mobile */
+    .view-switcher {
+        gap: 8px;
+    }
+    
+    .view-btn {
+        flex: 0 0 calc(50% - 4px);
+        min-width: 0;
+        padding: 8px 12px;
+        font-size: 13px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Action buttons: Clear Cache and Share URL share 50% each */
+    #clearCacheBtn,
+    #shareBtn {
+        flex: 0 0 calc(50% - 5px) !important;
+    }
+    
     .cache-detail-item {
         flex-direction: column;
         gap: 4px;
