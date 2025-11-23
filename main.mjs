@@ -12,7 +12,9 @@ import {
     getInitialRepos,
     getCacheAgeText,
     setupAdBanner,
-    formatMarkdown
+    formatMarkdown,
+    formatDate,
+    renderIssueDetails
 } from './shared.mjs';
 
 // Initialize the application
@@ -112,55 +114,6 @@ async function loadIssueDetails(issue) {
     
     // No need to fetch comments - we already have the count in issue.comments
     renderIssueDetails(issue, issue.html_url, iframeTitle, detailsContent);
-}
-
-/**
- * Render issue details to the DOM
- */
-function renderIssueDetails(issue, htmlUrl, iframeTitle, detailsContent) {
-    
-    iframeTitle.textContent = `#${issue.number} - ${issue.title}`;
-    
-    // Format dates
-    const createdDate = new Date(issue.created_at).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
-    
-    const updatedDate = new Date(issue.updated_at).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
-    
-    // Build HTML
-    let html = `
-        <div class="issue-detail-header">
-            <div class="issue-detail-title">
-                ${escapeHtml(issue.title)}
-                <a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" style="color: #58a6ff; font-size: 14px; margin-left: 10px; text-decoration: none;" title="Open on GitHub">↗️</a>
-            </div>
-            <div class="issue-detail-meta">
-                <span>${issue.state === 'open' ? '🟢' : '🔴'} ${issue.state}</span>
-                <span>👤 ${escapeHtml(issue.user.login)}</span>
-                <span>📅 Created: ${createdDate}</span>
-                <span>🔄 Updated: ${updatedDate}</span>
-                ${issue.milestone ? `<span>🎯 ${escapeHtml(issue.milestone.title)}</span>` : ''}
-                ${issue.comments > 0 ? `<span>💬 ${issue.comments} comment${issue.comments !== 1 ? 's' : ''}</span>` : ''}
-            </div>
-        </div>
-        
-        ${issue.body ? `
-            <div class="issue-detail-body">
-                ${formatMarkdown(issue.body)}
-            </div>
-        ` : '<div class="issue-detail-body" style="color: #8b949e;"><em>No description provided.</em></div>'}
-    `;
-    
-    html += `<a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" class="view-on-github">View on GitHub ↗️</a>`;
-    
-    detailsContent.innerHTML = html;
 }
 
 /**
@@ -291,6 +244,8 @@ function renderItems(items, isPR = false) {
                          item.type === 'task' ? 'task' : 'other';
         const stateIcon = item.state === 'open' ? '🟢' : '🔴';
         const milestone = item.milestone ? `<span class="milestone">🎯 ${escapeHtml(item.milestone.title)}</span>` : '';
+        const createdDate = formatDate(item.created_at);
+        const updatedDate = formatDate(item.updated_at);
         
         return `
             <div class="item" data-issue='${JSON.stringify(item).replace(/'/g, "&apos;")}' data-is-pr="${isPR}">
@@ -303,6 +258,7 @@ function renderItems(items, isPR = false) {
                 <div class="item-meta">
                     <span class="label label-${typeLabel}">${typeLabel}</span>
                     <span class="item-state">${stateIcon} ${item.state}</span>
+                    <span class="item-dates">📅 ${createdDate} • 🔄 ${updatedDate}</span>
                     ${milestone}
                     ${item.labels.slice(0, 3).map(label => {
                         const labelName = typeof label === 'string' ? label : label.name;

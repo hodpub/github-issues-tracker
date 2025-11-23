@@ -517,6 +517,17 @@ export function setupAdBanner(imageUrl = 'https://hodpub.com/wp-content/uploads/
 }
 
 /**
+ * Format a date for display
+ */
+export function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+/**
  * Format markdown text with support for mixed HTML/Markdown
  */
 export function formatMarkdown(text) {
@@ -581,4 +592,42 @@ export function formatMarkdown(text) {
     html = html.replace(/\n/g, '<br>');
     
     return '<p style="margin-bottom: 12px;">' + html + '</p>';
+}
+
+/**
+ * Render issue details to the DOM
+ */
+export function renderIssueDetails(issue, htmlUrl, iframeTitle, detailsContent) {
+    iframeTitle.textContent = `#${issue.number} - ${issue.title}`;
+    
+    const createdDate = formatDate(issue.created_at);
+    const updatedDate = formatDate(issue.updated_at);
+    
+    // Build HTML
+    let html = `
+        <div class="issue-detail-header">
+            <div class="issue-detail-title">
+                ${escapeHtml(issue.title)}
+                <a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" style="color: #58a6ff; font-size: 14px; margin-left: 10px; text-decoration: none;" title="Open on GitHub">↗️</a>
+            </div>
+            <div class="issue-detail-meta">
+                <span>${issue.state === 'open' ? '🟢' : '🔴'} ${issue.state}</span>
+                <span>👤 ${escapeHtml(issue.user.login)}</span>
+                <span>📅 Created: ${createdDate}</span>
+                <span>🔄 Updated: ${updatedDate}</span>
+                ${issue.milestone ? `<span>🎯 ${escapeHtml(issue.milestone.title)}</span>` : ''}
+                ${issue.comments > 0 ? `<span>💬 ${issue.comments} comment${issue.comments !== 1 ? 's' : ''}</span>` : ''}
+            </div>
+        </div>
+        
+        ${issue.body ? `
+            <div class="issue-detail-body">
+                ${formatMarkdown(issue.body)}
+            </div>
+        ` : '<div class="issue-detail-body" style="color: #8b949e;"><em>No description provided.</em></div>'}
+    `;
+    
+    html += `<a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" class="view-on-github">View on GitHub ↗️</a>`;
+    
+    detailsContent.innerHTML = html;
 }
