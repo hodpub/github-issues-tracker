@@ -106,6 +106,7 @@ async function loadAllRepositories(repos, openOnly = true) {
 
         // Aggregate all issues by type (excluding PRs)
         const allIssues = successful.flatMap(r => r.issues);
+        const allPRs = successful.flatMap(r => r.pullRequests);
         
         // Group by type
         const byType = {
@@ -118,19 +119,21 @@ async function loadAllRepositories(repos, openOnly = true) {
         // Render swimlanes for each type
         const typeOrder = [
             { key: 'bug', label: '🐛 Bugs', icon: '🐛' },
+            { key: 'prs', label: '🔀 Pull Requests', icon: '🔀', items: allPRs },
             { key: 'feature', label: '✨ Features', icon: '✨' },
             { key: 'task', label: '📋 Tasks', icon: '📋' },
             { key: 'other', label: '❓ Other', icon: '❓' }
         ];
 
-        typeOrder.forEach(({ key, label, icon }) => {
-            if (byType[key].length > 0) {
-                renderTypeSwimlane(label, byType[key]);
+        typeOrder.forEach(({ key, label, icon, items }) => {
+            const itemsToRender = items || byType[key];
+            if (itemsToRender && itemsToRender.length > 0) {
+                renderTypeSwimlane(label, itemsToRender);
             }
         });
 
-        if (allIssues.length === 0) {
-            swimlanesEl.innerHTML = '<div class="empty-state">No issues found</div>';
+        if (allIssues.length === 0 && allPRs.length === 0) {
+            swimlanesEl.innerHTML = '<div class="empty-state">No issues or PRs found</div>';
         }
 
     } catch (error) {

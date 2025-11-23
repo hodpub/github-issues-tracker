@@ -202,10 +202,10 @@ function renderSwimlane(repoData) {
             <div class="swimlane-stats">
                 <div>
                     <span>📝 Issues: ${totalIssues}</span>
-                    <span>🔀 PRs: ${totalPRs}</span>
+                    <span style="${totalPRs > 0 ? 'color: #a371f7; font-weight: 600;' : ''}">🔀 PRs: ${totalPRs}</span>
                 </div>
                 <div>
-                    <span style="${bugCount > 0 ? 'color: #f85149; font-weight: 600;' : ''}">🐛 Bugs: ${bugCount}</span>
+                    <span style="${bugCount > 0 ? 'color: #f85149; font-weight: 600;' : bugCount === 0 ? 'color: #3fb950; font-weight: 600;' : ''}">🐛 Bugs: ${bugCount}</span>
                     <span>✨ Features: ${featureCount}</span>
                     <span>📋 Tasks: ${taskCount}</span>
                     <span>❓ Other: ${otherCount}</span>
