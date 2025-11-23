@@ -950,8 +950,12 @@ export function formatMarkdown(text) {
     // Ordered lists
     html = html.replace(/^\d+\. (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
     
-    // Wrap consecutive list items
-    html = html.replace(/(<li[\s\S]*?<\/li>\s*)+/g, '<ul style="margin: 10px 0;">$&</ul>');
+    // Wrap consecutive list items and remove extra newlines within lists
+    html = html.replace(/(<li[\s\S]*?<\/li>\s*)+/g, (match) => {
+        // Remove newlines between list items
+        const cleanedList = match.replace(/\n/g, '');
+        return '<ul style="margin: 10px 0;">' + cleanedList + '</ul>';
+    });
     
     // Blockquotes
     html = html.replace(/^&gt; (.+)$/gm, '<blockquote style="border-left: 3px solid #30363d; padding-left: 15px; margin: 10px 0; color: #8b949e;">$1</blockquote>');
