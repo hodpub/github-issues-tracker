@@ -236,6 +236,10 @@ button:disabled {
 }
 
 .iframe-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    bottom: 20px;
     width: 0;
     overflow: hidden;
     transition: width 0.3s ease, opacity 0.3s ease;
@@ -246,6 +250,8 @@ button:disabled {
     flex-direction: column;
     opacity: 0;
     pointer-events: none;
+    z-index: 1000;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.5);
 }
 
 .iframe-panel.open {
@@ -678,6 +684,7 @@ button:disabled {
         width: 100%;
         height: 0;
         position: fixed;
+        top: auto;
         bottom: 0;
         left: 0;
         right: 0;
