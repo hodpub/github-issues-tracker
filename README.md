@@ -115,4 +115,4 @@ Issues and pull requests are welcome! This is an open-source project maintained 
 
 ## License
 
-MIT - Feel free to use, modify, and distribute as you wish.
+BSD-3-Clause - Feel free to use, modify, and distribute as you wish.
