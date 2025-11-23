@@ -301,9 +301,35 @@ export function escapeHtml(text) {
 }
 
 /**
+ * Update view switcher links to preserve current repos parameter
+ */
+function updateViewSwitcherLinks() {
+    const params = new URLSearchParams(window.location.search);
+    const repos = params.get('repos');
+    
+    if (repos) {
+        const viewSwitcher = document.querySelector('.view-switcher');
+        if (viewSwitcher) {
+            const byRepoLink = viewSwitcher.querySelector('a[href="index.html"]');
+            const byTypeLink = viewSwitcher.querySelector('a[href="by-type.html"]');
+            
+            if (byRepoLink) {
+                byRepoLink.href = `index.html?repos=${encodeURIComponent(repos)}`;
+            }
+            if (byTypeLink) {
+                byTypeLink.href = `by-type.html?repos=${encodeURIComponent(repos)}`;
+            }
+        }
+    }
+}
+
+/**
  * Setup common UI handlers (repos toggle, token permissions toggle)
  */
 export function setupCommonUI() {
+    // Update view switcher links with current repos
+    updateViewSwitcherLinks();
+    
     // Toggle repos configuration section
     const reposToggle = document.getElementById('reposToggle');
     const reposSection = document.getElementById('reposSection');
