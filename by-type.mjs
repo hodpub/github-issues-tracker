@@ -3,6 +3,8 @@ import {
     getContrastColor,
     showError,
     escapeHtml,
+    formatReactions,
+    getTotalReactions,
     setupCommonUI,
     setupLoadButton,
     setupAutoLoad,
@@ -182,7 +184,12 @@ function renderItems(items) {
         return '<div class="empty-state">No items found</div>';
     }
 
-    return items.map(item => {
+    // Sort by reactions count (descending)
+    const sortedItems = [...items].sort((a, b) => {
+        return getTotalReactions(b.reactions) - getTotalReactions(a.reactions);
+    });
+
+    return sortedItems.map(item => {
         const stateIcon = item.state === 'open' ? '🟢' : '🔴';
         const milestone = item.milestone ? `<span class="milestone">🎯 ${escapeHtml(item.milestone.title)}</span>` : '';
         const createdDate = formatDate(item.created_at);
@@ -202,6 +209,7 @@ function renderItems(items) {
                     <span class="item-state">${stateIcon} ${item.state}</span>
                     <span class="item-dates">📅 ${createdDate} • 🔄 ${updatedDate}</span>
                     ${milestone}
+                    ${formatReactions(item.reactions)}
                     ${item.labels.slice(0, 3).map(label => {
                         const labelName = typeof label === 'string' ? label : label.name;
                         const labelColor = typeof label === 'object' && label.color ? 

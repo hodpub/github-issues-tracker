@@ -8,6 +8,8 @@ import {
     getContrastColor,
     showError,
     escapeHtml,
+    formatReactions,
+    getTotalReactions,
     setupCommonUI,
     setupAdBanner,
     setupLoadButton,
@@ -140,9 +142,14 @@ function renderSwimlane(repoData) {
     swimlane.className = 'swimlane collapsed';
 
     // Sort issues by type: bugs, features, tasks, other
+    // Then by reactions count (descending)
     const typeOrder = { bug: 1, feature: 2, task: 3, other: 4 };
     const sortedIssues = [...issues].sort((a, b) => {
-        return (typeOrder[a.type] || 4) - (typeOrder[b.type] || 4);
+        const typeComparison = (typeOrder[a.type] || 4) - (typeOrder[b.type] || 4);
+        if (typeComparison !== 0) return typeComparison;
+        
+        // If same type, sort by reactions count (descending)
+        return getTotalReactions(b.reactions) - getTotalReactions(a.reactions);
     });
 
     const totalIssues = issues.length;
@@ -231,6 +238,7 @@ function renderItems(items, isPR = false) {
                     <span class="item-state">${stateIcon} ${item.state}</span>
                     <span class="item-dates">📅 ${createdDate} • 🔄 ${updatedDate}</span>
                     ${milestone}
+                    ${formatReactions(item.reactions)}
                     ${item.labels.slice(0, 3).map(label => {
                         const labelName = typeof label === 'string' ? label : label.name;
                         const labelColor = typeof label === 'object' && label.color ? 

@@ -301,6 +301,42 @@ export function escapeHtml(text) {
 }
 
 /**
+ * Format reactions for display
+ */
+export function formatReactions(reactions) {
+    if (!reactions) return '';
+    
+    const reactionMap = [
+        { key: '+1', emoji: '👍', label: 'thumbs up' },
+        { key: '-1', emoji: '👎', label: 'thumbs down' },
+        { key: 'laugh', emoji: '😄', label: 'laugh' },
+        { key: 'hooray', emoji: '🎉', label: 'hooray' },
+        { key: 'confused', emoji: '😕', label: 'confused' },
+        { key: 'heart', emoji: '❤️', label: 'heart' },
+        { key: 'rocket', emoji: '🚀', label: 'rocket' },
+        { key: 'eyes', emoji: '👀', label: 'eyes' }
+    ];
+    
+    const reactionElements = reactionMap
+        .filter(r => reactions[r.key] && reactions[r.key] > 0)
+        .map(r => `<span title="${r.label}" style="display: inline-flex; align-items: center; gap: 2px; font-size: 12px;">${r.emoji} ${reactions[r.key]}</span>`);
+    
+    if (reactionElements.length === 0) return '';
+    
+    return `<span class="reactions" style="display: inline-flex; gap: 8px; align-items: center;">${reactionElements.join('')}</span>`;
+}
+
+/**
+ * Get total reactions count for an item
+ */
+export function getTotalReactions(reactions) {
+    if (!reactions) return 0;
+    
+    const keys = ['+1', '-1', 'laugh', 'hooray', 'confused', 'heart', 'rocket', 'eyes'];
+    return keys.reduce((total, key) => total + (reactions[key] || 0), 0);
+}
+
+/**
  * Update view switcher links to preserve current repos parameter
  */
 function updateViewSwitcherLinks() {
@@ -995,8 +1031,8 @@ export function renderIssueDetails(issue, htmlUrl, iframeTitle, detailsContent) 
                 <span>📅 Created: ${createdDate}</span>
                 <span>🔄 Updated: ${updatedDate}</span>
                 ${issue.milestone ? `<span>🎯 ${escapeHtml(issue.milestone.title)}</span>` : ''}
-                ${issue.comments > 0 ? `<span>💬 ${issue.comments} comment${issue.comments !== 1 ? 's' : ''}</span>` : ''}
             </div>
+            ${formatReactions(issue.reactions) ? `<div class="issue-detail-reactions" style="margin-top: 12px; padding: 10px; background: #161b22; border-radius: 6px;">${formatReactions(issue.reactions)}</div>` : ''}
         </div>
         
         ${issue.body ? `
