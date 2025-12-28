@@ -777,3 +777,65 @@ button:disabled {
         opacity: 0.7;
     }
 }
+
+/* Analytics consent banner */
+.analytics-consent {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+    z-index: 10000;
+    animation: slideUp 0.3s ease-out;
+}
+
+.analytics-consent-content {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.analytics-btn {
+    padding: 8px 16px;
+    border: 1px solid;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.analytics-btn:hover {
+    opacity: 0.85;
+}
+
+.analytics-btn:active {
+    transform: scale(0.98);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .analytics-consent-content {
+        max-width: 90%;
+        padding: 16px;
+    }
+    
+    .analytics-btn {
+        flex: 1 1 auto;
+        min-width: 100px;
+    }
+}

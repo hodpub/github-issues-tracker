@@ -69,11 +69,19 @@ For higher rate limits (5000 requests/hour instead of 60) or to see issues from 
 
 **This app is 100% client-side** - there is no backend server:
 - ✅ **No data collection**: We don't collect, store, or transmit any of your data
-- ✅ **No tracking**: No analytics, no cookies, no third-party scripts
 - ✅ **Local storage only**: Your GitHub token and cached data stay in your browser's localStorage
 - ✅ **Direct API calls**: All requests go directly from your browser to GitHub's API
 - ✅ **Open source**: Full source code available for inspection
 - ✅ **No accounts**: No sign-up, no login, no personal information required
+
+### Anonymous Analytics
+
+With your explicit consent, we collect anonymous visitor statistics using [GoatCounter](https://www.goatcounter.com/), a privacy-friendly analytics service:
+- 📊 **Opt-in only**: You'll see a consent banner on first visit - analytics only run if you accept
+- 🔒 **Privacy-focused**: Only page paths are tracked (e.g., `/index.html`), never query parameters with repository names
+- 🚫 **No personal data**: No cookies, no tracking across sites, no personally identifiable information
+- 💾 **Your choice persists**: Your decision is saved locally and remembered for future visits
+- ❌ **Easy to decline**: Simply click "No Thanks" and no tracking will occur
 
 Your privacy is protected because the app runs entirely in your browser. When you close the tab, nothing persists except the localStorage cache (which you can clear at any time).
 

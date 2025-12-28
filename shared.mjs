@@ -898,6 +898,7 @@ export function setupHelpPanel() {
                     <li><strong>100% client-side</strong> - no data sent to servers, all stays local</li>
                     <li><strong>Token stored locally</strong> in your browser only</li>
                     <li><strong>Private repos</strong> require a token with <code>repo</code> scope</li>
+                    <li><strong>Optional analytics:</strong> First visit shows consent banner - only page views tracked if you accept (no personal data or repository names)</li>
                 </ul>
             </section>
             
@@ -1045,4 +1046,60 @@ export function renderIssueDetails(issue, htmlUrl, iframeTitle, detailsContent) 
     html += `<a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" class="view-on-github">View on GitHub ↗️</a>`;
     
     detailsContent.innerHTML = html;
+}
+
+/**
+ * Analytics consent and initialization
+ */
+const ANALYTICS_CONSENT_KEY = 'github_issues_tracker_analytics_consent';
+
+export function setupAnalyticsConsent() {
+    const consentValue = localStorage.getItem(ANALYTICS_CONSENT_KEY);
+    
+    // If already decided, initialize analytics if accepted
+    if (consentValue === 'accepted') {
+        initializeAnalytics();
+        return;
+    } else if (consentValue === 'declined') {
+        return; // User declined, do nothing
+    }
+    
+    // Show consent banner
+    const consentBanner = document.getElementById('analyticsConsent');
+    if (!consentBanner) return;
+    
+    consentBanner.style.display = 'block';
+    
+    // Handle accept
+    document.getElementById('analyticsAccept')?.addEventListener('click', () => {
+        localStorage.setItem(ANALYTICS_CONSENT_KEY, 'accepted');
+        consentBanner.style.display = 'none';
+        initializeAnalytics();
+    });
+    
+    // Handle decline
+    document.getElementById('analyticsDecline')?.addEventListener('click', () => {
+        localStorage.setItem(ANALYTICS_CONSENT_KEY, 'declined');
+        consentBanner.style.display = 'none';
+    });
+}
+
+function initializeAnalytics() {
+    // Initialize GoatCounter analytics
+    // We track only the pathname (not query strings) to protect privacy
+    // This means we don't expose repository names from URLs
+    
+    window.goatcounter = {
+        // Only track the path, not query parameters
+        path: function(counter) {
+            return location.pathname || '/';
+        }
+    };
+    
+    // Load GoatCounter script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = '//gc.zgo.at/count.js';
+    script.setAttribute('data-goatcounter', 'https://hodpub.goatcounter.com/count');
+    document.head.appendChild(script);
 }
