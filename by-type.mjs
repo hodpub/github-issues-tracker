@@ -211,6 +211,7 @@ function renderItems(items) {
                     <span class="item-state">${stateIcon} ${item.state}</span>
                     <span class="item-dates">📅 ${createdDate} • 🔄 ${updatedDate}</span>
                     ${milestone}
+                    ${item.comments > 0 ? `<span>💬 ${item.comments}</span>` : ''}
                     ${formatReactions(item.reactions)}
                     ${item.labels.slice(0, 3).map(label => {
                         const labelName = typeof label === 'string' ? label : label.name;
