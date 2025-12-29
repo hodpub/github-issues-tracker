@@ -49,6 +49,20 @@ footer {
     font-size: 14px;
 }
 
+/* Interaction metrics (comments & reactions) */
+.interaction-metric {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 12px;
+}
+
+.reactions {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
 footer .footer-credits {
     margin-bottom: 10px;
 }

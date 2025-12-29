@@ -319,11 +319,11 @@ export function formatReactions(reactions) {
     
     const reactionElements = reactionMap
         .filter(r => reactions[r.key] && reactions[r.key] > 0)
-        .map(r => `<span title="${r.label}" style="display: inline-flex; align-items: center; gap: 2px; font-size: 12px;">${r.emoji} ${reactions[r.key]}</span>`);
+        .map(r => `<span class="interaction-metric" title="${r.label}">${r.emoji} ${reactions[r.key]}</span>`);
     
     if (reactionElements.length === 0) return '';
     
-    return `<span class="reactions" style="display: inline-flex; gap: 8px; align-items: center;">${reactionElements.join('')}</span>`;
+    return `<span class="reactions">${reactionElements.join('')}</span>`;
 }
 
 /**

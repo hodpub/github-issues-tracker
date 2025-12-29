@@ -240,7 +240,7 @@ function renderItems(items, isPR = false) {
                     <span class="item-state">${stateIcon} ${item.state}</span>
                     <span class="item-dates">📅 ${createdDate} • 🔄 ${updatedDate}</span>
                     ${milestone}
-                    ${item.comments > 0 ? `<span>💬 ${item.comments}</span>` : ''}
+                    ${item.comments > 0 ? `<span class="interaction-metric" title="comments">💬 ${item.comments}</span>` : ''}
                     ${formatReactions(item.reactions)}
                     ${item.labels.slice(0, 3).map(label => {
                         const labelName = typeof label === 'string' ? label : label.name;
