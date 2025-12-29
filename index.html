@@ -12,18 +12,18 @@
     </header>
     
     <div id="scrollable-content">
-        <div id="hodpub-ad" style="margin: 0 auto 35px auto; text-align: center; max-width: 500px;">
-            <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Advertisement</div>
+        <div id="hodpub-ad">
+            <div class="ad-label">Advertisement</div>
             <a href="https://hodpub.com/shop" target="_blank" rel="noopener noreferrer">
-                <img id="hodpub-ad-img" alt="HodPub" style="width: 100%; max-width: 500px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block;" src="hodpub-ad.webp">
+                <img id="hodpub-ad-img" alt="HodPub" src="hodpub-ad.webp">
             </a>
         </div>
         
         <div class="view-switcher">
             <a href="index.html" class="view-btn active">By Repository</a>
             <a href="by-type.html" class="view-btn">By Type</a>
-            <a href="https://ko-fi.com/cussa" target="_blank" rel="noopener noreferrer" class="view-btn" style="background: #13C3FF; border-color: #13C3FF; color: white;">☕ Support on Ko-fi</a>
-            <button id="helpBtn" class="view-btn" style="background: #6e7681; border-color: #6e7681;">❓ Help</button>
+            <a href="https://ko-fi.com/cussa" target="_blank" rel="noopener noreferrer" class="view-btn kofi-btn">☕ Support on Ko-fi</a>
+            <button id="helpBtn" class="view-btn help-btn">❓ Help</button>
         </div>
         
         <div class="config-section collapsed" id="reposSection">
@@ -39,10 +39,10 @@
                     <textarea id="repos" placeholder="owner/repo&#10;owner2/repo2">hodpub/github-issues-tracker</textarea>
                 </div>
                 
-                <div class="input-group" id="tokenSection" style="margin-top: 15px;">
+                <div class="input-group" id="tokenSection">
                     <label for="token">
                         GitHub Personal Access Token (optional for public repos, required for private)
-                        <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer" style="color: #58a6ff; text-decoration: none; margin-left: 8px;">Get token ↗️</a>
+                        <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer" class="token-link">Get token ↗️</a>
                     </label>
                     <input type="password" id="token" placeholder="ghp_...">
                     <div class="token-permissions">
@@ -57,7 +57,7 @@
                             <div class="token-permission-item">
                                 <strong>repo</strong> - Full control of private repositories (optional, only if you need private repos)
                             </div>
-                            <p style="margin-top: 10px; font-size: 12px; color: #8b949e;">
+                            <p>
                                 Without a token: 60 requests/hour<br>
                                 With a token: 5,000 requests/hour
                             </p>
@@ -65,22 +65,22 @@
                     </div>
                 </div>
                 
-                <div style="margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                    <button id="loadBtn" style="flex: 1 1 100%; max-width: 400px;">Load Issues & PRs</button>
+                <div class="button-row">
+                    <button id="loadBtn">Load Issues & PRs</button>
                 </div>
-                <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                    <button id="clearCacheBtn" style="background: #6e7681; flex: 0 0 auto;">Clear Cache</button>
-                    <button id="shareBtn" style="background: #238636; flex: 0 0 auto;">🔗 Share URL</button>
+                <div class="button-row-secondary">
+                    <button id="clearCacheBtn">Clear Cache</button>
+                    <button id="shareBtn">🔗 Share URL</button>
                 </div>
-                <div style="margin-top: 10px; padding: 8px 12px; background: #161b22; border-radius: 6px; font-size: 12px; color: #8b949e;">
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <div id="cacheStatus" style="cursor: pointer; user-select: none; flex: 1;">No cached data</div>
-                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;">
-                            <input type="checkbox" id="forceRefresh" style="cursor: pointer;">
+                <div class="cache-status-container">
+                    <div class="cache-status-header">
+                        <div id="cacheStatus">No cached data</div>
+                        <label>
+                            <input type="checkbox" id="forceRefresh">
                             <span>Force refresh</span>
                         </label>
                     </div>
-                    <div id="cacheDetails" style="display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #30363d;"></div>
+                    <div id="cacheDetails"></div>
                 </div>
             </div>
         </div>
@@ -126,16 +126,16 @@
     </footer>
 </div>
 
-<div id="analyticsConsent" class="analytics-consent" style="display: none;">
+<div id="analyticsConsent" class="analytics-consent">
         <div class="analytics-consent-content">
-            <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #e6edf3;">📊 Help Us Improve</h3>
-            <p style="margin: 0 0 16px 0; color: #8b949e; line-height: 1.5;">
+            <h3>📊 Help Us Improve</h3>
+            <p>
                 We'd like to collect anonymous visitor statistics to understand usage patterns. 
                 This helps us prioritize improvements. We only track page views—no personal data or repository names.
             </p>
-            <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
-                <button id="analyticsDecline" class="analytics-btn" style="background: #6e7681; border-color: #6e7681;">No Thanks</button>
-                <button id="analyticsAccept" class="analytics-btn" style="background: #238636; border-color: #238636;">Accept</button>
+            <div class="analytics-actions">
+                <button id="analyticsDecline" class="analytics-btn">No Thanks</button>
+                <button id="analyticsAccept" class="analytics-btn">Accept</button>
             </div>
         </div>
     </div>
