@@ -33,6 +33,13 @@ h1 {
     padding: 0 20px 20px 20px;
 }
 
+@media (max-width: 768px) {
+    #scrollable-content {
+        /* Add extra padding on mobile for browser UI and safe areas */
+        padding-bottom: max(80px, env(safe-area-inset-bottom, 80px));
+    }
+}
+
 .view-switcher {
     display: flex;
     gap: 10px;
