@@ -230,10 +230,10 @@ function renderItems(items, isPR = false) {
         return `
             <div class="item" data-issue='${JSON.stringify(item).replace(/'/g, "&apos;")}' data-is-pr="${isPR}">
                 <div class="item-header">
+                    <span class="item-number">#${item.number}</span>
                     <a href="${item.html_url}" class="item-title" target="_blank" rel="noopener noreferrer">
                         ${escapeHtml(item.title)} ↗️
                     </a>
-                    <span class="item-number">#${item.number}</span>
                 </div>
                 <div class="item-meta">
                     <span class="label label-${typeLabel}">${typeLabel}</span>

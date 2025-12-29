@@ -147,7 +147,6 @@ footer {
 
 /* Item title text (clickable in by-type view) */
 .item-title-text {
-    flex: 1;
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
@@ -870,9 +869,16 @@ button:disabled {
 
 .item-header {
     display: flex;
-    justify-content: space-between;
     align-items: start;
+    gap: 8px;
     margin-bottom: 8px;
+}
+
+.item-number {
+    color: #8b949e;
+    font-size: 13px;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .item-title {
@@ -881,15 +887,29 @@ button:disabled {
     font-weight: 500;
     color: #c9d1d9;
     text-decoration: none;
-    margin-right: 10px;
 }
 
 .item-title:hover {
     color: #58a6ff;
 }
 
+.item-title-text {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #c9d1d9;
+}
+
 .item-title-text:hover {
     color: #58a6ff;
+}
+
+.item-title-link {
+    font-size: 14px;
+    color: #c9d1d9;
+    text-decoration: none;
+    flex-shrink: 0;
+    margin-left: 4px;
 }
 
 .item-title-link:hover {

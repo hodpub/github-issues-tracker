@@ -200,11 +200,11 @@ function renderItems(items) {
         return `
             <div class="item" data-issue='${JSON.stringify(item).replace(/'/g, "&apos;")}'>
                 <div class="item-header">
+                    <span class="item-number">#${item.number}</span>
                     <span class="item-title-text">
                         ${escapeHtml(item.title)}
                     </span>
                     <a href="${item.html_url}" class="item-title-link" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">↗️</a>
-                    <span class="item-number">#${item.number}</span>
                 </div>
                 <div class="item-meta">
                     <span class="label repo-badge">${escapeHtml(item.repoName)}</span>
