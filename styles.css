@@ -63,6 +63,104 @@ footer {
     align-items: center;
 }
 
+/* Error message styling */
+.error-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.error-message {
+    flex: 1;
+}
+
+.error-close-btn {
+    background: none;
+    border: none;
+    color: #ffa198;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0;
+    margin-left: 10px;
+    line-height: 1;
+}
+
+/* Help panel content */
+.help-content-wrapper {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.help-content-wrapper h2 {
+    color: #58a6ff;
+    margin-bottom: 20px;
+}
+
+.help-content-wrapper h3 {
+    color: #8b949e;
+    margin-bottom: 10px;
+}
+
+.help-content-wrapper section {
+    margin-bottom: 30px;
+}
+
+.help-content-wrapper ol,
+.help-content-wrapper ul {
+    line-height: 1.8;
+}
+
+/* Cache details tip */
+.cache-tip {
+    font-size: 11px;
+    color: #8b949e;
+    margin-bottom: 8px;
+    padding: 6px;
+    background: #161b22;
+    border-radius: 4px;
+    border-left: 2px solid #58a6ff;
+}
+
+.cache-repo-name {
+    font-family: monospace;
+    color: #58a6ff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* Statistics styling */
+.stat-prs {
+    color: #a371f7;
+    font-weight: 600;
+}
+
+.stat-bugs-present {
+    color: #f85149;
+    font-weight: 600;
+}
+
+.stat-bugs-none {
+    color: #3fb950;
+    font-weight: 600;
+}
+
+/* Item title text (clickable in by-type view) */
+.item-title-text {
+    flex: 1;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #c9d1d9;
+}
+
+.item-title-link {
+    margin-left: 8px;
+    font-size: 14px;
+    color: #c9d1d9;
+    text-decoration: none;
+}
+
 footer .footer-credits {
     margin-bottom: 10px;
 }
@@ -790,6 +888,94 @@ button:disabled {
     color: #58a6ff;
 }
 
+.item-title-text:hover {
+    color: #58a6ff;
+}
+
+.item-title-link:hover {
+    color: #58a6ff;
+}
+
+/* Help panel pro tip */
+.help-pro-tip {
+    padding: 15px;
+    background: #161b22;
+    border-radius: 6px;
+    border-left: 3px solid #238636;
+}
+
+.help-pro-tip strong {
+    color: #3fb950;
+}
+
+/* Markdown rendering classes */
+.md-h1 {
+    color: #c9d1d9;
+    font-size: 20px;
+    margin: 15px 0 10px 0;
+}
+
+.md-h2 {
+    color: #c9d1d9;
+    font-size: 18px;
+    margin: 15px 0 10px 0;
+}
+
+.md-h3 {
+    color: #c9d1d9;
+    font-size: 16px;
+    margin: 15px 0 10px 0;
+}
+
+.md-link {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+.md-list {
+    margin: 10px 0;
+}
+
+.md-list-item {
+    margin-left: 20px;
+}
+
+.md-blockquote {
+    border-left: 3px solid #30363d;
+    padding-left: 15px;
+    margin: 10px 0;
+    color: #8b949e;
+}
+
+.md-hr {
+    border: none;
+    border-top: 1px solid #30363d;
+    margin: 20px 0;
+}
+
+.md-paragraph {
+    margin-bottom: 12px;
+}
+
+/* Issue detail panel specific styles */
+.issue-detail-link {
+    color: #58a6ff;
+    font-size: 14px;
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.issue-detail-reactions {
+    margin-top: 12px;
+    padding: 10px;
+    background: #161b22;
+    border-radius: 6px;
+}
+
+.issue-detail-empty {
+    color: #8b949e;
+}
+
 .item-number {
     color: #8b949e;
     font-size: 13px;
@@ -809,6 +995,8 @@ button:disabled {
     border-radius: 12px;
     font-size: 12px;
     font-weight: 500;
+    background: var(--label-bg, #6e7681);
+    color: var(--label-color, white);
 }
 
 .label-bug {

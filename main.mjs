@@ -182,10 +182,10 @@ function renderSwimlane(repoData) {
             <div class="swimlane-stats">
                 <div>
                     <span>📝 Issues: ${totalIssues}</span>
-                    <span style="${totalPRs > 0 ? 'color: #a371f7; font-weight: 600;' : ''}">🔀 PRs: ${totalPRs}</span>
+                    <span class="${totalPRs > 0 ? 'stat-prs' : ''}">🔀 PRs: ${totalPRs}</span>
                 </div>
                 <div>
-                    <span style="${bugCount > 0 ? 'color: #f85149; font-weight: 600;' : bugCount === 0 ? 'color: #3fb950; font-weight: 600;' : ''}">🐛 Bugs: ${bugCount}</span>
+                    <span class="${bugCount > 0 ? 'stat-bugs-present' : bugCount === 0 ? 'stat-bugs-none' : ''}">🐛 Bugs: ${bugCount}</span>
                     <span>✨ Features: ${featureCount}</span>
                     <span>📋 Tasks: ${taskCount}</span>
                     <span>❓ Other: ${otherCount}</span>
@@ -247,7 +247,7 @@ function renderItems(items, isPR = false) {
                         const labelColor = typeof label === 'object' && label.color ? 
                             `#${label.color}` : '#6e7681';
                         const textColor = getContrastColor(labelColor);
-                        return `<span class="label" style="background: ${labelColor}; color: ${textColor}">${escapeHtml(labelName)}</span>`;
+                        return `<span class="label" style="--label-bg: ${labelColor}; --label-color: ${textColor}">${escapeHtml(labelName)}</span>`;
                     }).join('')}
                 </div>
             </div>

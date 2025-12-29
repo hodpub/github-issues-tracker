@@ -200,10 +200,10 @@ function renderItems(items) {
         return `
             <div class="item" data-issue='${JSON.stringify(item).replace(/'/g, "&apos;")}'>
                 <div class="item-header">
-                    <span class="item-title-text" style="cursor: pointer;">
+                    <span class="item-title-text">
                         ${escapeHtml(item.title)}
                     </span>
-                    <a href="${item.html_url}" class="item-title" target="_blank" rel="noopener noreferrer" style="margin-left: 8px; font-size: 14px;" onclick="event.stopPropagation();">↗️</a>
+                    <a href="${item.html_url}" class="item-title-link" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">↗️</a>
                     <span class="item-number">#${item.number}</span>
                 </div>
                 <div class="item-meta">
@@ -218,7 +218,7 @@ function renderItems(items) {
                         const labelColor = typeof label === 'object' && label.color ? 
                             `#${label.color}` : '#6e7681';
                         const textColor = getContrastColor(labelColor);
-                        return `<span class="label" style="background: ${labelColor}; color: ${textColor}">${escapeHtml(labelName)}</span>`;
+                        return `<span class="label" style="--label-bg: ${labelColor}; --label-color: ${textColor}">${escapeHtml(labelName)}</span>`;
                     }).join('')}
                 </div>
             </div>

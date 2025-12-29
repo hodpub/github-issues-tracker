@@ -282,9 +282,9 @@ export function showError(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error';
     errorDiv.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: start;">
-            <div style="flex: 1;">${message}</div>
-            <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: #ffa198; cursor: pointer; font-size: 20px; padding: 0; margin-left: 10px; line-height: 1;">&times;</button>
+        <div class="error-content">
+            <div class="error-message">${message}</div>
+            <button onclick="this.parentElement.parentElement.remove()" class="error-close-btn">&times;</button>
         </div>
     `;
     errorContainer.innerHTML = '';
@@ -580,13 +580,12 @@ export function updateCacheStatus() {
             // Populate details panel
             if (cacheDetails) {
                 cacheDetails.innerHTML = `
-                    <div style="font-size: 11px; color: #8b949e; margin-bottom: 8px; padding: 6px; background: #161b22; border-radius: 4px; border-left: 2px solid #58a6ff;">
+                    <div class="cache-tip">
                         💡 <strong>Tip:</strong> Left-click to toggle repo in list • Right-click to delete from cache
                     </div>
                 ` + cacheInfo.map(info => `
                     <div class="cache-detail-item">
-                        <span style="font-family: monospace; color: #58a6ff; cursor: pointer; text-decoration: underline;" 
-                              class="cache-repo-name" 
+                        <span class="cache-repo-name" 
                               data-repo="${escapeHtml(info.repo)}"
                               title="Left-click to toggle in list • Right-click to delete from cache">
                             ${escapeHtml(info.repo)}
@@ -846,12 +845,12 @@ export function setupHelpPanel() {
     
     // Help content
     const helpHTML = `
-        <div style="padding: 20px; max-width: 800px; margin: 0 auto;">
-            <h2 style="color: #58a6ff; margin-bottom: 20px;">📖 Quick Start Guide</h2>
+        <div class="help-content-wrapper">
+            <h2>📖 Quick Start Guide</h2>
             
-            <section style="margin-bottom: 30px;">
-                <h3 style="color: #8b949e; margin-bottom: 10px;">🚀 Getting Started</h3>
-                <ol style="line-height: 1.8;">
+            <section>
+                <h3>🚀 Getting Started</h3>
+                <ol>
                     <li><strong>Enter repositories</strong> in the format <code>owner/repo</code> (one per line)</li>
                     <li><strong>Optional (but required for private repos):</strong> Add a GitHub token for higher rate limits (5000/hour vs 60/hour) and to access private repositories</li>
                     <li>Click <strong>"Load Issues & PRs"</strong> to fetch data</li>
@@ -859,9 +858,9 @@ export function setupHelpPanel() {
                 </ol>
             </section>
             
-            <section style="margin-bottom: 30px;">
-                <h3 style="color: #8b949e; margin-bottom: 10px;">🎯 Key Features</h3>
-                <ul style="line-height: 1.8;">
+            <section>
+                <h3>🎯 Key Features</h3>
+                <ul>
                     <li><strong>Click on any issue/PR card</strong> to view details inline</li>
                     <li><strong>PRs open directly on GitHub</strong> for code review</li>
                     <li><strong>Color coding:</strong> Bugs (🐛 red/green), PRs (🔀 purple when present)</li>
@@ -870,9 +869,9 @@ export function setupHelpPanel() {
                 </ul>
             </section>
             
-            <section style="margin-bottom: 30px;">
-                <h3 style="color: #8b949e; margin-bottom: 10px;">💾 Cache Management</h3>
-                <ul style="line-height: 1.8;">
+            <section>
+                <h3>💾 Cache Management</h3>
+                <ul>
                     <li><strong>Click "📦 cached"</strong> to expand/collapse cache details</li>
                     <li><strong>Left-click</strong> a cached repo name to toggle it in your list</li>
                     <li><strong>Right-click</strong> a cached repo name to delete it from cache</li>
@@ -881,9 +880,9 @@ export function setupHelpPanel() {
                 </ul>
             </section>
             
-            <section style="margin-bottom: 30px;">
-                <h3 style="color: #8b949e; margin-bottom: 10px;">🔗 Sharing & URLs</h3>
-                <ul style="line-height: 1.8;">
+            <section>
+                <h3>🔗 Sharing & URLs</h3>
+                <ul>
                     <li><strong>URL auto-updates</strong> when you load repositories</li>
                     <li><strong>Share button (🔗)</strong> copies the current URL to clipboard</li>
                     <li><strong>Bookmark URLs</strong> to save your repository configurations</li>
@@ -891,9 +890,9 @@ export function setupHelpPanel() {
                 </ul>
             </section>
             
-            <section style="margin-bottom: 30px;">
-                <h3 style="color: #8b949e; margin-bottom: 10px;">⚠️ Important Notes</h3>
-                <ul style="line-height: 1.8;">
+            <section>
+                <h3>⚠️ Important Notes</h3>
+                <ul>
                     <li><strong>Red pulsing Load button</strong> means config changed - click to reload</li>
                     <li><strong>100% client-side</strong> - no data sent to servers, all stays local</li>
                     <li><strong>Token stored locally</strong> in your browser only</li>
@@ -902,16 +901,16 @@ export function setupHelpPanel() {
                 </ul>
             </section>
             
-            <section style="margin-bottom: 20px;">
-                <h3 style="color: #8b949e; margin-bottom: 10px;">🎨 View Modes</h3>
-                <ul style="line-height: 1.8;">
+            <section>
+                <h3>🎨 View Modes</h3>
+                <ul>
                     <li><strong>By Repository:</strong> Each repo gets its own section showing all issues/PRs</li>
                     <li><strong>By Type:</strong> Issues grouped across all repos (PRs, Bugs, Features, Tasks)</li>
                 </ul>
             </section>
             
-            <div style="padding: 15px; background: #161b22; border-radius: 6px; border-left: 3px solid #238636;">
-                <strong style="color: #3fb950;">💡 Pro Tip:</strong> Use the cache panel to quickly add/remove repos you've previously viewed!
+            <div class="help-pro-tip">
+                <strong>💡 Pro Tip:</strong> Use the cache panel to quickly add/remove repos you've previously viewed!
             </div>
         </div>
     `;
@@ -962,9 +961,9 @@ export function formatMarkdown(text) {
     html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
     
     // Headers
-    html = html.replace(/^### (.+)$/gm, '<h3 style="color: #c9d1d9; font-size: 16px; margin: 15px 0 10px 0;">$1</h3>');
-    html = html.replace(/^## (.+)$/gm, '<h2 style="color: #c9d1d9; font-size: 18px; margin: 15px 0 10px 0;">$1</h2>');
-    html = html.replace(/^# (.+)$/gm, '<h1 style="color: #c9d1d9; font-size: 20px; margin: 15px 0 10px 0;">$1</h1>');
+    html = html.replace(/^### (.+)$/gm, '<h3 class="md-h3">$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2 class="md-h2">$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h1 class="md-h1">$1</h1>');
     
     // Bold
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
@@ -978,36 +977,36 @@ export function formatMarkdown(text) {
     html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
     
     // Links
-    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #58a6ff; text-decoration: none;">$1 ↗️</a>');
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="md-link">$1 ↗️</a>');
     
     // Unordered lists
-    html = html.replace(/^\* (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
-    html = html.replace(/^- (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
+    html = html.replace(/^\* (.+)$/gm, '<li class="md-list-item">$1</li>');
+    html = html.replace(/^- (.+)$/gm, '<li class="md-list-item">$1</li>');
     
     // Ordered lists
-    html = html.replace(/^\d+\. (.+)$/gm, '<li style="margin-left: 20px;">$1</li>');
+    html = html.replace(/^\d+\. (.+)$/gm, '<li class="md-list-item">$1</li>');
     
     // Wrap consecutive list items and remove extra newlines within lists
     html = html.replace(/(<li[\s\S]*?<\/li>\s*)+/g, (match) => {
         // Remove newlines between list items
         const cleanedList = match.replace(/\n/g, '');
-        return '<ul style="margin: 10px 0;">' + cleanedList + '</ul>';
+        return '<ul class="md-list">' + cleanedList + '</ul>';
     });
     
     // Blockquotes
-    html = html.replace(/^&gt; (.+)$/gm, '<blockquote style="border-left: 3px solid #30363d; padding-left: 15px; margin: 10px 0; color: #8b949e;">$1</blockquote>');
+    html = html.replace(/^&gt; (.+)$/gm, '<blockquote class="md-blockquote">$1</blockquote>');
     
     // Horizontal rules
-    html = html.replace(/^---$/gm, '<hr style="border: none; border-top: 1px solid #30363d; margin: 20px 0;">');
+    html = html.replace(/^---$/gm, '<hr class="md-hr">');
     
     // Restore HTML tags (must be before converting &lt; back)
     html = html.replace(/\|\|\|HTMLTAG(\d+)\|\|\|/g, (match, index) => htmlTags[parseInt(index)]);
     
     // Paragraphs - preserve double line breaks
-    html = html.replace(/\n\n/g, '</p><p style="margin-bottom: 12px;">');
+    html = html.replace(/\n\n/g, '</p><p class="md-paragraph">');
     html = html.replace(/\n/g, '<br>');
     
-    return '<p style="margin-bottom: 12px;">' + html + '</p>';
+    return '<p class="md-paragraph">' + html + '</p>';
 }
 
 /**
@@ -1024,7 +1023,7 @@ export function renderIssueDetails(issue, htmlUrl, iframeTitle, detailsContent) 
         <div class="issue-detail-header">
             <div class="issue-detail-title">
                 ${escapeHtml(issue.title)}
-                <a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" style="color: #58a6ff; font-size: 14px; margin-left: 10px; text-decoration: none;" title="Open on GitHub">↗️</a>
+                <a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" class="issue-detail-link" title="Open on GitHub">↗️</a>
             </div>
             <div class="issue-detail-meta">
                 <span>${issue.state === 'open' ? '🟢' : '🔴'} ${issue.state}</span>
@@ -1033,14 +1032,14 @@ export function renderIssueDetails(issue, htmlUrl, iframeTitle, detailsContent) 
                 <span>🔄 Updated: ${updatedDate}</span>
                 ${issue.milestone ? `<span>🎯 ${escapeHtml(issue.milestone.title)}</span>` : ''}
             </div>
-            ${formatReactions(issue.reactions) ? `<div class="issue-detail-reactions" style="margin-top: 12px; padding: 10px; background: #161b22; border-radius: 6px;">${formatReactions(issue.reactions)}</div>` : ''}
+            ${formatReactions(issue.reactions) ? `<div class="issue-detail-reactions">${formatReactions(issue.reactions)}</div>` : ''}
         </div>
         
         ${issue.body ? `
             <div class="issue-detail-body">
                 ${formatMarkdown(issue.body)}
             </div>
-        ` : '<div class="issue-detail-body" style="color: #8b949e;"><em>No description provided.</em></div>'}
+        ` : '<div class="issue-detail-body issue-detail-empty"><em>No description provided.</em></div>'}
     `;
     
     html += `<a href="${htmlUrl}" target="_blank" rel="noopener noreferrer" class="view-on-github">View on GitHub ↗️</a>`;
