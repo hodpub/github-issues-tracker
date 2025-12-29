@@ -6,6 +6,7 @@ import {
     classifyItem,
     fetchRepositoryData,
     getContrastColor,
+    getRepoColor,
     showError,
     escapeHtml,
     formatReactions,
@@ -171,7 +172,7 @@ function renderSwimlane(repoData) {
     const [owner, repoName] = repo.split('/');
 
     swimlane.innerHTML = `
-        <div class="swimlane-header">
+        <div class="swimlane-header" style="--repo-bg: ${getRepoColor(repo)}; background: var(--repo-bg, transparent); border-radius: 6px; padding: 15px;">
             <div class="swimlane-title">
                 <div class="swimlane-title-main">
                     <span class="collapse-icon">▼</span>

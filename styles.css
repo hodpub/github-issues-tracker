@@ -1045,8 +1045,8 @@ button:disabled {
 }
 
 .repo-badge {
-    background: #0d1117;
-    color: #8b949e;
+    background: var(--repo-bg, #161b22);
+    color: #c9d1d9;
     border: 1px solid #30363d;
 }
 

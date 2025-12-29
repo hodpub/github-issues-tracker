@@ -5,6 +5,7 @@ import {
     escapeHtml,
     formatReactions,
     getTotalReactions,
+    getRepoColor,
     setupCommonUI,
     setupLoadButton,
     setupAutoLoad,
@@ -207,7 +208,7 @@ function renderItems(items) {
                     <a href="${item.html_url}" class="item-title-link" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">↗️</a>
                 </div>
                 <div class="item-meta">
-                    <span class="label repo-badge">${escapeHtml(item.repoName)}</span>
+                    <span class="label repo-badge" style="--repo-bg: ${getRepoColor(item.repoName)}">${escapeHtml(item.repoName)}</span>
                     <span class="item-state">${stateIcon} ${item.state}</span>
                     <span class="item-dates">📅 ${createdDate} • 🔄 ${updatedDate}</span>
                     ${milestone}

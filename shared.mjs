@@ -30,6 +30,28 @@ export function setGitHubToken(token) {
 }
 
 /**
+ * Generate a consistent color for a repository name
+ */
+export function getRepoColor(repoName) {
+    // Better hash function with more distribution
+    // Use golden ratio to spread values across the spectrum
+    let hash = 0;
+    for (let i = 0; i < repoName.length; i++) {
+        const char = repoName.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    
+    // Use golden ratio (0.618033988749895) for better distribution
+    const goldenRatio = 0.618033988749895;
+    const hue = (Math.abs(hash) * goldenRatio * 360) % 360;
+    
+    // Use high saturation and moderate lightness for vibrant colors
+    // Return as HSL with moderate opacity for background
+    return `hsla(${Math.round(hue)}, 80%, 60%, 0.25)`;
+}
+
+/**
  * Get the GitHub token
  */
 export function getGitHubToken() {
