@@ -209,6 +209,16 @@ footer a:hover {
     border-color: #6e7681;
 }
 
+.view-btn.react-help-btn {
+    background: #238636;
+    border-color: #238636;
+}
+
+.view-btn.react-help-btn:hover {
+    background: #2ea043;
+    border-color: #2ea043;
+}
+
 /* Token section */
 #tokenSection {
     margin-top: 15px;
@@ -926,6 +936,15 @@ button:disabled {
 
 .help-pro-tip strong {
     color: #3fb950;
+}
+
+/* Help panel image */
+.help-image {
+    max-width: 100%;
+    margin: 10px 0;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    display: block;
 }
 
 /* Markdown rendering classes */

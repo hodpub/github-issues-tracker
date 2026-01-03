@@ -931,6 +931,19 @@ export function setupHelpPanel() {
                 </ul>
             </section>
             
+            <section>
+                <h3>👍 How to Upvote/React to Issues</h3>
+                <ol>
+                    <li>Click the <strong>↗️ arrow link</strong> next to the issue title, or click <strong>"View on GitHub"</strong> button at the bottom of the detail panel</li>
+                    <li>This will open the issue on GitHub in a new tab</li>
+                    <li>On the GitHub issue page, find the <strong>emoji reaction buttons</strong> at the bottom of the issue description</li>
+                    <li>Click the emoji you want to add (👍 for upvote, ❤️ for heart, etc.)</li>
+                    <li>Your reaction will be visible to everyone and counted in the reaction totals</li>
+                </ol>
+                <img src="assets/reaction-example.png" alt="GitHub reaction buttons example" class="help-image">
+                <p><em>Note: You need to be logged into GitHub to add reactions. Reactions are public and associated with your GitHub account.</em></p>
+            </section>
+            
             <div class="help-pro-tip">
                 <strong>💡 Pro Tip:</strong> Use the cache panel to quickly add/remove repos you've previously viewed!
             </div>
@@ -947,6 +960,25 @@ export function setupHelpPanel() {
     closeHelp.addEventListener('click', () => {
         helpPanel.classList.remove('open');
     });
+    
+    // React help button (if exists on page)
+    const reactHelpBtn = document.getElementById('reactHelpBtn');
+    if (reactHelpBtn) {
+        reactHelpBtn.addEventListener('click', () => {
+            helpContent.innerHTML = helpHTML;
+            helpPanel.classList.add('open');
+            // Scroll to the reactions section after a brief delay
+            setTimeout(() => {
+                const reactSection = helpContent.querySelector('h3');
+                const sections = helpContent.querySelectorAll('h3');
+                sections.forEach(section => {
+                    if (section.textContent.includes('How to Upvote/React')) {
+                        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            }, 100);
+        });
+    }
 }
 
 /**
