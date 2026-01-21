@@ -782,8 +782,8 @@ export function setupLoadButton(onLoad) {
             url.searchParams.set('repos', repos.join(','));
             window.history.pushState({}, '', url);
             
-            // Update view switcher links with new repos
-            updateViewSwitcherLinks();
+            // Update view switcher links with new repos (small delay to ensure URL is updated)
+            setTimeout(() => updateViewSwitcherLinks(), 10);
         }
 
         // Handle force refresh
